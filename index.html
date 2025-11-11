@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>脱单倒计时精准测算系统 - 双11特别版</title>
+    <link rel="stylesheet" href="calculator.css">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="container">
+        <!-- 主表单页面 -->
+        <div class="card" id="formCard">
+            <div class="header">
+                <h1>❤️ 脱单倒计时精准测算系统</h1>
+                <p class="subtitle">基于量子力学与情感大数据的AI智能分析</p>
+                <div class="badge">双11特别版 v2.0</div>
+            </div>
+
+            <form id="calculatorForm">
+                <div class="form-group">
+                    <label>
+                        <span class="label-icon">👤</span>
+                        您的姓名
+                    </label>
+                    <input type="text" id="name" required placeholder="请输入真实姓名">
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <span class="label-icon">🎂</span>
+                        您的年龄
+                    </label>
+                    <input type="number" id="age" required min="18" max="99" placeholder="请输入年龄">
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <span class="label-icon">⚧️</span>
+                        您的性别
+                    </label>
+                    <select id="gender" required>
+                        <option value="">请选择</option>
+                        <option value="male">男</option>
+                        <option value="female">女</option>
+                        <option value="other">其他</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <span class="label-icon">💼</span>
+                        月收入范围
+                    </label>
+                    <select id="income" required>
+                        <option value="">请选择</option>
+                        <option value="low">3000以下</option>
+                        <option value="medium">3000-8000</option>
+                        <option value="high">8000-15000</option>
+                        <option value="very-high">15000以上</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <span class="label-icon">😊</span>
+                        颜值自评（1-10分）
+                    </label>
+                    <input type="range" id="appearance" min="1" max="10" value="5" oninput="updateAppearanceValue(this.value)">
+                    <div class="range-value">当前: <span id="appearanceValue">5</span> 分</div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <span class="label-icon">📅</span>
+                        单身多久了？
+                    </label>
+                    <select id="singleTime" required>
+                        <option value="">请选择</option>
+                        <option value="half">半年以内</option>
+                        <option value="one">1-2年</option>
+                        <option value="three">3-5年</option>
+                        <option value="five">5-10年</option>
+                        <option value="forever">从未脱单过</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <span class="label-icon">🎮</span>
+                        周末通常在做什么？
+                    </label>
+                    <select id="weekend" required>
+                        <option value="">请选择</option>
+                        <option value="social">社交聚会</option>
+                        <option value="sport">运动健身</option>
+                        <option value="game">打游戏/刷剧</option>
+                        <option value="work">加班工作</option>
+                        <option value="study">学习充电</option>
+                        <option value="sleep">睡觉</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <span>🔮 开始精准测算</span>
+                </button>
+            </form>
+
+            <div class="disclaimer">
+                * 本系统采用先进的AI算法，结合面相学、星座学、大数据分析，测算准确率高达99.99%
+            </div>
+        </div>
+
+        <!-- 加载页面 -->
+        <div class="card loading-card" id="loadingCard" style="display: none;">
+            <div class="loading-content">
+                <div class="avatar-placeholder">
+                    <div class="avatar-circle"></div>
+                </div>
+                <h2 class="analyzing-title">正在分析您的数据...</h2>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">0%</div>
+                <div class="loading-steps">
+                    <div class="step" id="step1">⏳ 连接量子服务器...</div>
+                    <div class="step" id="step2">⏳ 分析面相数据...</div>
+                    <div class="step" id="step3">⏳ 计算星座匹配度...</div>
+                    <div class="step" id="step4">⏳ 查询姻缘数据库...</div>
+                    <div class="step" id="step5">⏳ 生成脱单报告...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结果页面 -->
+        <div class="card result-card" id="resultCard" style="display: none;">
+            <div class="result-content">
+                <div class="confetti"></div>
+                <h2 class="result-title">📊 测算报告</h2>
+                <div class="user-info">
+                    <div class="user-avatar">😎</div>
+                    <div class="user-name" id="userName"></div>
+                </div>
+
+                <div class="result-box">
+                    <div class="result-label">预计脱单时间</div>
+                    <div class="result-countdown" id="countdownResult">
+                        <span class="countdown-number">999</span>
+                        <span class="countdown-unit">年</span>
+                        <span class="countdown-number">11</span>
+                        <span class="countdown-unit">个月</span>
+                        <span class="countdown-number">11</span>
+                        <span class="countdown-unit">天</span>
+                    </div>
+                    <div class="result-message" id="resultMessage">
+                        恭喜您！您将在下辈子成功脱单！
+                    </div>
+                </div>
+
+                <div class="abstract-box">
+                    <h3>💡 资深建议</h3>
+                    <div id="abstractMessages" class="abstract-messages">
+                        <!-- 抽象建议将在这里显示 -->
+                    </div>
+                </div>
+
+                <div class="cert-promotion">
+                    <div class="promo-box">
+                        <div class="promo-icon">🏆</div>
+                        <h3>既然短时间内脱不了单...</h3>
+                        <p>不如先领一张<span class="highlight">资深光棍认证证书</span>吧！</p>
+                        <p class="promo-tip">✨ 可下载保存，发朋友圈炫耀专用</p>
+                        <button class="cert-btn" onclick="goToCertificate()">
+                            立即领取我的专属证书 →
+                        </button>
+                    </div>
+                </div>
+
+                <div class="share-section">
+                    <div class="truth-reveal">
+                        <p>😂 开个玩笑！</p>
+                        <p>今天是双11光棍节，祝你开心！</p>
+                        <p>真爱总会到来，保持自信！❤️</p>
+                    </div>
+                </div>
+
+                <button class="retry-btn" onclick="retry()">
+                    🔄 重新测算
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="calculator.js"></script>
+</body>
+</html>

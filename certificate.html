@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资深光棍认证证书生成器 - 双11特别版</title>
+    <link rel="stylesheet" href="certificate.css">
+</head>
+<body>
+    <div class="background-pattern"></div>
+
+    <div class="container">
+        <!-- 输入表单卡片 -->
+        <div class="input-card" id="inputCard">
+            <div class="card-header">
+                <h1>🏆 资深光棍认证中心</h1>
+                <p class="subtitle">国际单身协会官方认证 · 全球通用</p>
+                <div class="badge">2025双11特别版</div>
+            </div>
+
+            <form id="certForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>📛 真实姓名</label>
+                        <input type="text" id="fullName" required placeholder="请输入姓名">
+                    </div>
+
+                    <div class="form-group">
+                        <label>⚧️ 性别</label>
+                        <select id="gender" required>
+                            <option value="">选择</option>
+                            <option value="男">男</option>
+                            <option value="女">女</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>📅 出生年份</label>
+                        <input type="number" id="birthYear" required placeholder="例如：1995" min="1950" max="2006">
+                    </div>
+
+                    <div class="form-group">
+                        <label>💔 单身年限</label>
+                        <select id="singleYears" required>
+                            <option value="">选择年限</option>
+                            <option value="1">1-2年</option>
+                            <option value="3">3-5年</option>
+                            <option value="6">6-10年</option>
+                            <option value="11">11-20年</option>
+                            <option value="21">20年以上</option>
+                            <option value="99">母胎单身</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>🎯 脱单态度</label>
+                    <select id="attitude" required>
+                        <option value="">选择态度</option>
+                        <option value="积极寻找中">积极寻找中</option>
+                        <option value="佛系等待中">佛系等待中</option>
+                        <option value="已放弃治疗">已放弃治疗</option>
+                        <option value="享受单身">享受单身</option>
+                        <option value="不婚主义者">不婚主义者</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>🏅 认证宣言（可选）</label>
+                    <input type="text" id="slogan" placeholder="例如：单身使我快乐，恋爱使我破产" maxlength="30">
+                </div>
+
+                <button type="submit" class="generate-btn">
+                    ✨ 生成专属证书
+                </button>
+            </form>
+
+            <div class="info-box">
+                💡 温馨提示：证书生成后可直接下载保存，分享到朋友圈炫耀！
+            </div>
+        </div>
+
+        <!-- 证书预览卡片 -->
+        <div class="certificate-card" id="certificateCard" style="display: none;">
+            <div class="cert-controls">
+                <button class="control-btn" onclick="downloadCertificate()">📥 下载证书</button>
+                <button class="control-btn" onclick="regenerate()">🔄 重新生成</button>
+                <button class="control-btn back-btn" onclick="goBack()">← 返回测算</button>
+            </div>
+
+            <!-- 证书主体 -->
+            <div class="certificate" id="certificate">
+                <!-- 防伪水印 -->
+                <div class="watermark">国际单身协会认证</div>
+
+                <!-- 证书边框装饰 -->
+                <div class="cert-border">
+                    <div class="corner corner-tl"></div>
+                    <div class="corner corner-tr"></div>
+                    <div class="corner corner-bl"></div>
+                    <div class="corner corner-br"></div>
+                </div>
+
+                <!-- 证书头部 -->
+                <div class="cert-header">
+                    <div class="cert-logo">🏆</div>
+                    <h1 class="cert-title">资深光棍认证证书</h1>
+                    <p class="cert-subtitle">SENIOR SINGLE CERTIFICATE</p>
+                    <div class="cert-org">国际单身协会 · 中国区认证中心</div>
+                </div>
+
+                <!-- 证书内容 -->
+                <div class="cert-body">
+                    <div class="cert-number">证书编号：<span id="certNumber"></span></div>
+
+                    <div class="cert-content">
+                        <div class="cert-name-line">
+                            兹证明 <span class="cert-name" id="certName"></span> 同志
+                        </div>
+
+                        <div class="cert-info">
+                            <p>性别：<span id="certGender"></span> | 出生年份：<span id="certBirthYear"></span>年</p>
+                            <p>单身年限：<span id="certSingleYears"></span> | 当前态度：<span id="certAttitude"></span></p>
+                        </div>
+
+                        <div class="cert-main-text">
+                            经本协会严格审核，该同志在长期单身实践中表现优异，
+                            展现出非凡的独立生活能力和强大的内心承受能力。
+                            单身期间无不良恋爱记录，严格遵守"单身公约"，
+                            特授予<span class="rank-badge" id="rankBadge"></span>称号。
+                        </div>
+
+                        <div class="cert-slogan" id="certSlogan"></div>
+
+                        <div class="cert-footer-text">
+                            特发此证，以资鼓励。希望继续保持，争取早日升级！
+                        </div>
+                    </div>
+
+                    <!-- 印章和签名区 -->
+                    <div class="cert-stamps">
+                        <div class="stamp-left">
+                            <div class="stamp">
+                                <div class="stamp-circle">
+                                    <div class="stamp-star">★</div>
+                                    <div class="stamp-text">国际单身<br>协会认证</div>
+                                </div>
+                            </div>
+                            <div class="stamp-label">认证机构（章）</div>
+                        </div>
+
+                        <div class="cert-date">
+                            <p>发证日期：<span id="certDate"></span></p>
+                            <div class="signature">
+                                <div class="signature-line"></div>
+                                <div class="signature-text">认证官签字</div>
+                            </div>
+                        </div>
+
+                        <div class="stamp-right">
+                            <div class="stamp stamp-red">
+                                <div class="stamp-circle">
+                                    <div class="stamp-star">✓</div>
+                                    <div class="stamp-text">有效认证<br>全球通用</div>
+                                </div>
+                            </div>
+                            <div class="stamp-label">认证专用章</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 防伪码 -->
+                <div class="cert-security">
+                    防伪码：<span id="securityCode"></span> | 查询网址：www.single-forever.com | 投诉电话：114-514-1919-810
+                </div>
+            </div>
+
+            <!-- 段位说明 -->
+            <div class="rank-info">
+                <h3>🏅 光棍段位评级系统</h3>
+                <div class="ranks">
+                    <div class="rank-item">
+                        <span class="rank-badge-mini bronze">青铜光棍</span>
+                        <span class="rank-desc">1-2年</span>
+                    </div>
+                    <div class="rank-item">
+                        <span class="rank-badge-mini silver">白银光棍</span>
+                        <span class="rank-desc">3-5年</span>
+                    </div>
+                    <div class="rank-item">
+                        <span class="rank-badge-mini gold">黄金光棍</span>
+                        <span class="rank-desc">6-10年</span>
+                    </div>
+                    <div class="rank-item">
+                        <span class="rank-badge-mini platinum">铂金光棍</span>
+                        <span class="rank-desc">11-20年</span>
+                    </div>
+                    <div class="rank-item">
+                        <span class="rank-badge-mini diamond">钻石光棍</span>
+                        <span class="rank-desc">20年以上</span>
+                    </div>
+                    <div class="rank-item">
+                        <span class="rank-badge-mini king">王者光棍</span>
+                        <span class="rank-desc">母胎单身</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="certificate.js"></script>
+</body>
+</html>
